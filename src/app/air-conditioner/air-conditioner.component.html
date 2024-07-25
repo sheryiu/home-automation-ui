@@ -175,7 +175,7 @@
         class="absolute shadow-xl transition-all z-20"
         [ngClass]="{
           'left-[--x] top-[--y] -translate-x-1/2 -translate-y-[45%] size-[45vw] max-w-[200px] max-h-[200px] bg-blue-500 rounded-full': !currentPowered(),
-          'bottom-4 right-4 bg-gray-200 text-red-700 px-4 py-3 rounded-4': currentPowered()
+          'bottom-6 right-6 bg-red-950 text-red-600 px-6 py-4 rounded-4': currentPowered()
         }"
       >
         @if (!currentPowered()) {
@@ -185,7 +185,7 @@
           </div>
         }
         @if (currentPowered()) {
-          <div class="flex justify-center items-center gap-1">
+          <div class="flex justify-center items-center gap-2">
             <i class="icon-6 font-variation-fill">stop</i>
             <span class="font-medium">Stop</span>
           </div>
