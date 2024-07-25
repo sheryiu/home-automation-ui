@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:home-automation-ui": "node dist/home-automation-ui/server/server.mjs",
-    "deploy": "ng deploy --base-href=/home-automation-ui/ --repo=https://github.com/sheryiu/home-automation-ui.git"
+    "deploy": "ng deploy home-automation-ui --base-href=/home-automation-ui/ --repo=https://github.com/sheryiu/home-automation-ui.git"
   },
   "private": true,
   "dependencies": {
