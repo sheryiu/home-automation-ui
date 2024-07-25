@@ -1,0 +1,196 @@
+<div
+  class="w-screen h-screen pb-24 select-none overflow-hidden bg-gradient-to-b from-[--starting-color] to-[--ending-color] relative"
+  [style.--starting-color]="backgroundStartingColor()"
+  [style.--ending-color]="'hsl(0deg 0 10 / 1)'"
+>
+  <div class="flex flex-col items-center h-full">
+    <header
+      class="flex-none w-full flex flex-row items-center text-white px-3 py-4"
+    >
+      <button class="rounded-full size-8 active:bg-hover transition-colors flex items-center justify-center">
+        <i class="icon-5">arrow_back</i>
+      </button>
+      <div class="w-2"></div>
+      <span class="truncate text-xl font-medium"
+        >Living Room Air Conditioner</span
+      >
+      <div class="grow"></div>
+      <button class="rounded-full size-8 active:bg-hover transition-colors flex items-center justify-center">
+        <i class="icon-5">edit</i>
+      </button>
+    </header>
+
+    <div class="h-6"></div>
+
+    <!-- mode -->
+    <div class="w-11/12 max-w-[400px] flex-none text-white">
+      <div
+        class="border border-white/15 rounded-full flex p-1 relative"
+        #modeContainer
+      >
+        @if (currentPowered()) {
+          @if (modeIndicatorSize(); as size) {
+          <div
+            class="rounded-full bg-white/80 shadow-xl absolute z-0 transition-all"
+            [style.width.px]="size.width"
+            [style.height.px]="size.height"
+            [style.left.px]="size.left"
+          ></div>
+          }
+        }
+        <button
+          class="grow flex flex-col gap-0.5 items-center justify-center py-1.5 px-1 z-10 transition-colors"
+          #modeBtn
+          [disabled]="!currentPowered()"
+          [ngClass]="{ 'text-black': currentPowered() && currentMode() == modes.Auto }"
+          (click)="currentMode.set(modes.Auto)"
+        >
+          <i class="icon-5">thermometer</i>
+          <span class="font-medium uppercase text-xs opacity-70">Auto</span>
+        </button>
+        <button
+          class="grow flex flex-col gap-0.5 items-center justify-center py-1.5 px-1 z-10 transition-colors"
+          #modeBtn
+          [disabled]="!currentPowered()"
+          [ngClass]="{ 'text-black': currentPowered() && currentMode() == modes.Cool }"
+          (click)="currentMode.set(modes.Cool)"
+        >
+          <i class="icon-5">mode_cool</i>
+          <span class="font-medium uppercase text-xs opacity-70">Cool</span>
+        </button>
+        <button
+          class="grow flex flex-col gap-0.5 items-center justify-center py-1.5 px-1 z-10 transition-colors"
+          #modeBtn
+          [disabled]="!currentPowered()"
+          [ngClass]="{ 'text-black': currentPowered() && currentMode() == modes.Dry }"
+          (click)="currentMode.set(modes.Dry)"
+        >
+          <i class="icon-5">cool_to_dry</i>
+          <span class="font-medium uppercase text-xs opacity-70">Dry</span>
+        </button>
+        <button
+          class="grow flex flex-col gap-0.5 items-center justify-center py-1.5 px-1 z-10 transition-colors"
+          #modeBtn
+          [disabled]="!currentPowered()"
+          [ngClass]="{ 'text-black': currentPowered() && currentMode() == modes.Heat }"
+          (click)="currentMode.set(modes.Heat)"
+        >
+          <i class="icon-5">mode_heat</i>
+          <span class="font-medium uppercase text-xs opacity-70">Heat</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="h-6"></div>
+
+    <div class="grow py-6 px-6 flex justify-center">
+      <div class="w-10/12 p-6 flex justify-center items-center relative" #temperatureContainer>
+        @if (temperatureContainerSize(); as size) {
+          <div class="absolute text-white inset-0" [style.--radius.px]="size.width / 2" [style.--total]="temperatureRange.length">
+            @for (temp of temperatureRange; track $index) {
+              <span class="absolute -translate-x-1/2 left-1/2 top-1/2 temperature transition-opacity" [class.opacity-70]="!currentPowered()" [style.--index]="$index">{{ temp }}</span>
+            }
+            <button
+              [disabled]="!currentPowered()"
+              #temperatureButton
+              [style.--position]="temperatureButtonPosition()"
+              class="absolute left-1/2 top-1/2 -translate-x-1/2 z-10 temperature-button size-6 rounded-full border-4 shadow-lg border-[hsl(0deg_0_90)] bg-[hsl(0deg_0_70)] transition"
+              [ngClass]="{
+                'scale-0': !currentPowered(),
+                'scale-100': currentPowered()
+              }"
+              (pointerdown)="onTemperatureButtonDown($event)"
+              (pointerup)="onTemperatureButtonUp($event)"
+              (pointermove)="onTemperatureButtonMove($event)"
+            ></button>
+          </div>
+        }
+        <div class="size-full flex justify-center items-center aspect-square pb-[8%] transition" [ngClass]="{ 'grayscale': !currentPowered() }">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="37 -5 120 100"
+            class="w-full h-auto"
+          >
+            <defs>
+              <linearGradient
+                id="arcGradient"
+                gradientUnits="objectBoundingBox"
+              >
+                <stop offset="0%" stop-color="rgb(14, 53, 126)" />
+                <stop offset="20%" stop-color="rgb(28, 182, 169)" />
+                <stop offset="50%" stop-color="rgb(12, 162, 35)" />
+                <stop offset="80%" stop-color="rgb(137, 213, 22)" />
+                <stop offset="100%" stop-color="rgb(206, 137, 18)" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M55,90 A55,55 0 1,1 140,90"
+              style="fill: none; stroke: rgb(120, 120, 120); stroke-width: 5.5px"
+            ></path>
+            <path
+              d="M55,90 A55,55 0 1,1 140,90"
+              style="
+                fill: none;
+                stroke: url(#arcGradient);
+                stroke-width: 4px;
+                stroke-dasharray: 248;
+              "
+              [style.stroke-dashoffset]="temperatureStrokeOffset()"
+            ></path>
+          </svg>
+        </div>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-5xl font-black">
+          <span class="inline-block">{{ currentTemperature() }}</span><sup class="opacity-70 font-medium text-3xl">°C</sup>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-6"></div>
+
+    <div class="w-11/12 max-w-[400px] flex-none text-white">
+      <div class="w-full grid grid-cols-3 gap-4">
+        <button [disabled]="!currentPowered()" class="border border-white/10 rounded-[2rem] px-2 py-3 flex items-center gap-0.5 flex-col enabled:active:bg-hover transition-colors">
+          <i class="icon-5">mode_fan</i>
+          <span class="font-medium uppercase text-xs opacity-70">Fan</span>
+        </button>
+        <button [disabled]="!currentPowered()" class="border border-white/10 rounded-[2rem] px-2 py-3 flex items-center gap-0.5 flex-col enabled:active:bg-hover transition-colors">
+          <i class="icon-5">bedtime</i>
+          <span class="font-medium uppercase text-xs opacity-70">Quiet</span>
+        </button>
+        <button [disabled]="!currentPowered()" class="border border-white/10 rounded-[2rem] px-2 py-3 flex items-center gap-0.5 flex-col enabled:active:bg-hover transition-colors">
+          <i class="icon-5">arrow_range</i>
+          <span class="font-medium uppercase text-xs opacity-70">Swing</span>
+        </button>
+    </div>
+
+    <!-- fab -->
+    @if (temperatureContainerSize(); as size) {
+      <button
+        (click)="currentPowered.set(!currentPowered())"
+        [style.--x.px]="size.x + size.width / 2"
+        [style.--y.px]="size.y + size.height / 2"
+        class="absolute shadow-xl transition-all z-20"
+        [ngClass]="{
+          'left-[--x] top-[--y] -translate-x-1/2 -translate-y-[45%] size-[45vw] max-w-[200px] max-h-[200px] bg-blue-500 rounded-full': !currentPowered(),
+          'bottom-4 right-4 bg-gray-200 text-red-700 px-4 py-3 rounded-4': currentPowered()
+        }"
+      >
+        @if (!currentPowered()) {
+          <div class="flex flex-col justify-center items-center gap-2">
+            <i class="icon-10 font-variation-fill">power_settings_new</i>
+            <span class="font-medium">Turn On</span>
+          </div>
+        }
+        @if (currentPowered()) {
+          <div class="flex justify-center items-center gap-1">
+            <i class="icon-6 font-variation-fill">stop</i>
+            <span class="font-medium">Stop</span>
+          </div>
+        }
+      </button>
+    }
+  </div>
+</div>

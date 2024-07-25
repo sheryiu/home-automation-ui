@@ -1,0 +1,23 @@
+
+
+path {
+  stroke-linecap: round;
+  stroke-width: 6;
+}
+
+.temperature {
+  --index: 0;
+  // 0 -> 126eg
+  // --total > -126eg
+  --degree: calc(126deg - var(--index) * 252deg / (var(--total) - 1));
+  margin-left: calc(-1 * var(--radius) * sin(var(--degree)));
+  margin-top: calc(-1 * var(--radius) * cos(var(--degree)));
+}
+.temperature-button {
+  --position: 0;
+  // 0 -> 126eg
+  // --total > -126eg
+  --degree: calc(126deg - var(--position) * 252deg / (var(--total) - 1));
+  margin-left: calc(-1 * (var(--radius) - 32px) * sin(var(--degree)));
+  margin-top: calc(-1 * (var(--radius) - 32px) * cos(var(--degree)));
+}
